@@ -1,0 +1,60 @@
+package solution;
+
+
+
+public class FrameNode {
+	public FrameNode[] links;
+	public FrameNode data;
+	public String image;
+	public String text;
+	
+	public FrameNode() {
+		links = new FrameNode[6];
+		data = null;
+		image = null;
+		text = null;	
+	}
+	public FrameNode(FrameNode[] link, String image, String text, FrameNode data) {
+		links = new FrameNode[link.length];
+		for(int i = 0; i < link.length; i++)
+		{
+			this.links[i] = link[i];
+		}
+		//this.links = links;
+		this.image = image;
+		this.text = text;
+		this.data = data;
+	}
+	
+	public void setLink(int i, FrameNode x) {
+		links[i] = x;
+	}
+	public FrameNode getLink(int i)
+	{
+		return links[i];
+	}
+	
+	public void setData(FrameNode x)
+	{
+		data = x;
+	}
+	public FrameNode getData() {
+		return data;
+	}
+	
+	public void setImage(String x) {
+		image = x;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setText(String x) {
+		text = x;
+	}
+	public String getText() {
+		return text;
+	}
+	
+	
+
+}

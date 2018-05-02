@@ -1,0 +1,70 @@
+package solution;
+
+
+public class GameNodes {
+	FrameNode startScreen;
+	FrameNode[] startScreenLink;
+	FrameNode cursor;
+	
+	FrameNode carillon;
+	FrameNode[] carillonlink;
+	
+	FrameNode carillon2;
+	FrameNode[] carillonlink2;
+	
+	FrameNode home;
+	FrameNode[] homeLink;
+	
+	FrameNode hogs;
+	FrameNode[] hogLinks;
+	
+	FrameNode swanson;
+	FrameNode[] swansonLink;
+	FrameNode pickett;
+	FrameNode[] pickettLink;
+	FrameNode loch;
+	FrameNode[] lochLink;
+	FrameNode bragg;
+	FrameNode[] braggLink;
+	FrameNode mountains;
+	FrameNode[] mountainsLink;
+	
+	
+	public GameNodes() 
+	{
+		hogLinks = new FrameNode[1];
+		hogLinks[0] = home;
+		hogs = new FrameNode(hogLinks, "data/home.txt", "data/Carillon1.txt", home);
+		
+		
+		homeLink = new FrameNode[1];
+		homeLink[0] = hogs;
+		home = new FrameNode(homeLink, "data/home.txt", "data/Carillon1.txt", home);
+		home.setLink(0, hogs);
+		
+		carillonlink = new FrameNode[6];
+		carillonlink[0] = swanson;
+		carillonlink[1] = pickett;
+		carillonlink[5] = home;
+		carillon = new FrameNode(carillonlink, "data/home.txt", "data/Carillon1.txt", home);
+		carillon.setLink(0, swanson);
+		carillon.setLink(1, pickett);
+		carillon.setLink(5, home);
+		
+		startScreenLink = new FrameNode[1];
+		startScreen = new FrameNode(startScreenLink, "data/startScreen.txt",
+				"WELCOME TO GIANT SLAYER! ENTER YOUR CHARACTER NAME BELOW: ", home);
+		startScreen.setLink(0, carillon);
+		cursor = startScreen;
+		
+		
+		
+		
+	}
+	public FrameNode getCursor() 
+	{
+		return cursor;
+	}
+
+
+}

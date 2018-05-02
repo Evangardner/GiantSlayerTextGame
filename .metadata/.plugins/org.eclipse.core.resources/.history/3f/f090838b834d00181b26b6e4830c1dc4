@@ -1,0 +1,81 @@
+
+package solution;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class GiantGame {
+	public static final int WIDTH = 851;
+	public static final int HEIGHT = 650;
+	public JFrame frame;
+	public JTextArea mapTextField;
+	public File mapFile;
+	public JTextField field;
+	public GameNodes nodes;
+	public JPanel panel;
+	public JLabel label;
+	public JButton button;
+	
+	public GiantGame() {
+		frame = new JFrame();
+		frame.setTitle("~~Giant Slayer~~");
+		frame.setSize(WIDTH, HEIGHT);
+		frame.setLocation(50, 50);
+		frame.setResizable(false);
+		
+		panel = new JPanel();
+		label = new JLabel();
+		field = new JTextField(70);
+		button = new JButton("ENTER");
+		
+		nodes = new GameNodes();
+		mapFile = new File(nodes.getCursor().getImage());
+		label.setText(nodes.getCursor().getText());
+		mapTextField = new JTextArea();
+		try {
+		mapTextField.setText(getFileText());
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		mapTextField.setSize(WIDTH, HEIGHT);
+		mapTextField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
+		mapTextField.setEditable(false);
+		
+		
+		panel.add(mapTextField, BorderLayout.NORTH);
+		panel.add(label, BorderLayout.CENTER);
+		panel.add(field, BorderLayout.SOUTH);
+		panel.add(button, BorderLayout.SOUTH);
+		frame.add(panel);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public String getFileText() throws FileNotFoundException {
+		if(mapFile == null) {
+			throw new FileNotFoundException("Mapfile not Found");
+		}
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(mapFile);
+		String fileText = "";
+		while(scanner.hasNextLine()) {
+			fileText += scanner.nextLine() + "\n";
+		}
+		return fileText;
+	}
+	public static void main(String[] args) {
+		GiantGame giant = new GiantGame();
+	}
+	
+
+}

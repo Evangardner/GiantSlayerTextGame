@@ -1,0 +1,171 @@
+
+package solution;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class GiantGame {
+	public static final int WIDTH = 851;
+	public static final int HEIGHT = 660;
+	public JFrame frame;
+	public JTextArea mapTextField;
+	public File mapFile;
+	public JTextField field;
+	public GameNodes nodes;
+	public JPanel panel;
+	public JTextArea label;
+	public JButton button;
+	public String name = "traveller";
+	public FrameNode currentNode;
+	public File textFile;
+	public ActionListener namer;
+	public int pigs = 11;
+	public int coin = 0;
+	public int deadPigs = 0;
+	
+	public GiantGame() {
+		frame = new JFrame();
+		frame.setTitle("~~Giant Slayer~~");
+		frame.setSize(WIDTH, HEIGHT);
+		frame.setLocation(50, 50);
+		frame.setResizable(false);
+		
+		panel = new JPanel();
+		label = new JTextArea();
+		field = new JTextField(70);
+		button = new JButton("ENTER");
+		mapTextField = new JTextArea();
+		namer = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				name = field.getText();
+				updateFrame(0);
+			}
+				};
+		button.addActionListener(namer);
+		
+		nodes = new GameNodes();
+		currentNode = nodes.getCursor();
+		mapFile = new File(currentNode.getImage());
+		label.setText(currentNode.getText());
+		
+		try {
+		mapTextField.setText(getFileText(mapFile));
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		mapTextField.setSize(WIDTH, HEIGHT);
+		mapTextField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
+		mapTextField.setEditable(false);
+		label.setEditable(false);
+		
+		
+		panel.add(mapTextField, BorderLayout.NORTH);
+		panel.add(label, BorderLayout.CENTER);
+		panel.add(field, BorderLayout.SOUTH);
+		panel.add(button, BorderLayout.SOUTH);
+		frame.add(panel);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public String getFileText(File file) throws FileNotFoundException {
+		if(file == null) {
+			throw new FileNotFoundException("file not Found");
+		}
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(file);
+		String fileText = "";
+		while(scanner.hasNextLine()) {
+			fileText += scanner.nextLine() + "\n";
+		}
+		fileText = fileText.replaceAll("deadPigValue", ""+deadPigs * 3);
+		fileText = fileText.replaceAll("coinValue", ""+coin);
+		fileText = fileText.replaceAll("pigValue", ""+pigs);
+		fileText = fileText.replaceAll("nameValue", name);
+		return fileText;
+		
+	}
+	
+	public void updateFrame(int x)
+	{
+		field.setText(null);
+		currentNode = currentNode.getLink(x);
+		if(currentNode == nodes.slaughter) {
+			if(pigs <=1 )
+			{
+				nodes.slaughter = nodes.noHogs;
+				nodes.flute.setLink(0, nodes.noHogs);
+				currentNode = nodes.noHogs;
+				
+			}
+			else
+			{
+				pigs--;
+				deadPigs++;
+			}
+	
+		}
+		if(pigs < 0)
+		{
+			nodes.slaughter = nodes.noHogs;
+		}
+		if(currentNode == nodes.sale)
+		{
+			coin = (deadPigs * 3) * 10;
+			deadPigs = 0;
+			nodes.town1.setText("data/town2.txt");
+			nodes.town1.setLink(0, nodes.home);
+			nodes.home.setText("data/home2.txt");
+			nodes.home.setLink(0, nodes.carillon);
+		}
+		mapFile = new File(currentNode.getImage());
+		try {
+		mapTextField.setText(getFileText(mapFile));
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		textFile  = new File(currentNode.getText());
+		try {
+		label.setText(getFileText(textFile));
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		button.removeActionListener(namer);
+		try {
+		button.addActionListener(new ActionListener()
+		{
+		    @Override
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	System.out.println(field.getText());
+		        updateFrame((Integer.parseInt(field.getText())) - 1);	        
+		    }
+		});
+		} catch(NumberFormatException e)
+		{
+			//do nothing;
+		}
+		
+		
+	}
+	public static void main(String[] args) {
+		GiantGame giant = new GiantGame();
+	}
+	
+
+}

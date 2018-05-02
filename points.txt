@@ -1,0 +1,14 @@
++1 basic rooms
++1 pigs and coin are items in rooms
++1 rooms change as you play
++1 I don't have a map command but the map prints when the player needs to see it and I have a visual for each place
++1 character has a name the player can choose.
++1 character can interact with butcher and grocer, armorer to an extent
++1 coin is a statistic that can be improved
+
++1 pigs are objects that can be slaughtered
++1 player can collect pork
++1 player has the goal of being a pig farmer
++0.5 updateFrame method is recursive
+
+10.5 * 1.25(GitHub) = 13.125

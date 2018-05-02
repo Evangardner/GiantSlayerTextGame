@@ -1,0 +1,7 @@
+You come back to your farm to find your pigs gone! 
+your farm has been destroyed, and all that is left is a massive footprint... 
+A giant must have attacked! you hear screams from the town center. 
+It is time to leave Carillon for somewhere safe!
+
+1. pack your belongings and hurry to the road!
+coins: coinValue
